@@ -1,13 +1,17 @@
-# README
+# DeedDone Backend API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a Ruby on Rails API that will be used as a source for a Vue.js frontend.
+This will have User Authentication and Authorization
 
-Things you may want to cover:
+## Technologies:
+* Ruby 2.6.3
+* Rails 6.0.2.1
 
-* Ruby version
-
-* System dependencies
+## Gem Libraries of note:
+* Redis (Redis adapter to run Action Cable in production)
+* bcrypt (Active Model has_secure_password)
+* rack-cors (handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible)
+* jwt_sessions (json web tokens)
 
 * Configuration
 

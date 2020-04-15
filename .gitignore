@@ -17,6 +17,10 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+/.idea
+/coverage
+.env
+.env*
 
 # Ignore uploaded files in development.
 /storage/*

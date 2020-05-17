@@ -1,5 +1,4 @@
-
-FactoryBot.define do
+FactoryBot.define {
   factory :listing do
     title { 'Shoes' }
     description { 'tiny shoes' }
@@ -8,8 +7,10 @@ FactoryBot.define do
     trait :with_image do
       after :build do |listing|
         file_path = 'spec/fixtures/files/melvin.jpg'
-        listing.image.attach(io: File.open(file_path), filename: 'melvin.jpg', content_type: 'image/jpeg')
+        listing.image.attach(io: File.open(file_path),
+                             filename: 'melvin.jpg',
+                             content_type: 'image/jpeg')
       end
     end
   end
-end
+}

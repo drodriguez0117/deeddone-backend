@@ -9,10 +9,10 @@
 #
 ListingType.create([{ name: 'offer',
                                       description: 'giving',
-                                      active: 1 },
+                                      is_active: 1 },
                                     { name: 're quest',
                                       description: 'getting',
-                                      active: 1 }
+                                      is_active: 1 }
                                    ])
 
 Listing.create([{ title: '5000 Pencils',

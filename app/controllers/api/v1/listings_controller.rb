@@ -21,6 +21,7 @@ module Api
       # POST /listings
       # POST /listings.json
       def create
+        #@listing = Listing.create!(listing_params)
         @listing = Listing.new(listing_params)
         #@listing.image.attach(params.dig(:listing, :image))
 
@@ -39,9 +40,9 @@ module Api
 
         @listing = Listing.find(params[:id])
 
-        if @listing.image.attached?
-          @listing.image.purge_later
-          @listing.image.attach(params[:image])
+        if @listing.images.attached?
+          @listing.images.purge_later
+          @listing.images.attach(params[:images])
         end
 
         if @listing.update(listing_params)
@@ -67,7 +68,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def listing_params
-        params.require(:listing).permit(:title, :description, :listing_type_id, :image)
+        params.require(:listing).permit(:title, :description, :listing_type_id, images: [])
       end
     end
   end

@@ -7,8 +7,14 @@ RSpec.describe Listing, type: :model do
     expect(Listing.new(FactoryBot.attributes_for(:listing))).to be_valid
   end
   it 'is valid with valid attributes with image' do
-    expect(Listing.new(FactoryBot.attributes_for(:listing, image: :with_image)))
+    expect(Listing.new(FactoryBot.attributes_for(:listing, images: :with_image)))
   end
+
+  it 'is valid with valid attributes with multiple images' do
+    expect(Listing.new(FactoryBot.attributes_for(:listing,
+                                                 images: [ :with_image, :with_image ])))
+  end
+
   it 'is not valid without a title' do
     expect(Listing.new(FactoryBot.attributes_for(:listing, title: nil)
                       )).to_not be_valid

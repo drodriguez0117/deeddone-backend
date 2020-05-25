@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 2020_04_22_022433) do
     t.string "description"
     t.bigint "listing_type_id", null: false
     t.boolean "is_active", default: true, null: false
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["listing_type_id"], name: "index_listings_on_listing_type_id"

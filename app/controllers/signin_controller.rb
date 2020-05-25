@@ -3,8 +3,7 @@ class SigninController < ApplicationController
 
   def create
     user = User.find_by!(email: session_params[:email])
-
-    if user && user.authenticate(session_params[:password])
+    if user.authenticate(session_params[:password])
       payload = { user_id: user.id }
       session = JWTSessions::Session.new(payload: payload,
                                          refresh_by_access_allowed: true)
@@ -20,6 +19,7 @@ class SigninController < ApplicationController
     end
   end
 
+  # TODO: finish destroy method
   def destroy
     render json: :ok
   end

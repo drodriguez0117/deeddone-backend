@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'refresh/create'
   get 'signin/create'
   get 'signup/create'
 

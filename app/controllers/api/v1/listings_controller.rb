@@ -1,9 +1,8 @@
-require 'pp'
-
 module Api
   module V1
     class ListingsController < ApplicationController
-      before_action :set_listing, only: %i[show, create, update, destroy]
+      before_action :authorize_access_request!, except: [:show, :index]
+      before_action :set_listing, only: [:update, :destroy]
 
       # GET /listings
       # GET /listings.json
@@ -15,20 +14,18 @@ module Api
       # GET /listings/1
       # GET /listings/1.json
       def show
-        render json: @listing
+        render json: @listing, status: :ok
       end
 
       # POST /listings
       # POST /listings.json
       def create
-        #@listing = Listing.create!(listing_params)
-        @listing = Listing.new(listing_params)
-        #@listing.image.attach(params.dig(:listing, :image))
+        @listing = current_user.listings.build(listing_params)
+        #@listing = Listing.new(listing_params)
+        #@listing.user = current_user
 
         if @listing.save
           render json: @listing, status: :created
-          #render :show, status: :created, location: api_v1_listing_url(@listing)
-          #redirect_to api_v1_listing_url @listing
         else
           render json: @listing.errors, status: :unprocessable_entity
         end
@@ -47,7 +44,6 @@ module Api
 
         if @listing.update(listing_params)
           render json: @listing, status: :ok, location: api_v1_listing_url(@listing)
-          #render :show, status: :ok, location: @listing
         else
           render json: @listing.errors, status: :unprocessable_entity
         end
@@ -60,10 +56,10 @@ module Api
       end
 
       private
+
       # Use callbacks to share common setup or constraints between actions.
       def set_listing
-        @listing = Listing.find(params[:id])
-          #@listing = Listing.with_attached_images.find(params[:id])
+        @listing = current_user.listings.find(params[:id])
       end
 
       # Only allow a list of trusted parameters through.

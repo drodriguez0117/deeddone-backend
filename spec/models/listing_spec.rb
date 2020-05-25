@@ -1,18 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe Listing, type: :model do
-  let(:listing) { create :listing }
+  #let!(:listing) { FactoryBot.create(:listing) }
+  let!(:user) { FactoryBot.create(:user) }
 
   it 'is valid with valid attributes' do
-    expect(Listing.new(FactoryBot.attributes_for(:listing))).to be_valid
+    expect(Listing.new(FactoryBot.attributes_for(:listing, user: user))).to be_valid
   end
   it 'is valid with valid attributes with image' do
-    expect(Listing.new(FactoryBot.attributes_for(:listing, images: :with_image)))
+    expect(Listing.new(FactoryBot.attributes_for(:listing,
+                                                 images: :with_image,
+                                                 user: user))).to be_valid
   end
 
   it 'is valid with valid attributes with multiple images' do
     expect(Listing.new(FactoryBot.attributes_for(:listing,
-                                                 images: [ :with_image, :with_image ])))
+                                                 images: [ :with_image, :with_image ],
+                                                 user: user))).to be_valid
   end
 
   it 'is not valid without a title' do

@@ -6,6 +6,8 @@ This will have User Authentication and Authorization
 ## Technologies:
 * Ruby 2.6.3
 * Rails 6.0.2.1
+  * ActiveStorage with multiple files
+* PostgreSQL 
 
 ## Gem Libraries of note:
 * Redis (Redis adapter to run Action Cable in production)
@@ -13,7 +15,8 @@ This will have User Authentication and Authorization
 * rack-cors (handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible)
 * jwt_sessions (json web tokens)
 
-* Configuration
+## Configuration
+* ActiveStorage for multiple attachments
 
 * Database creation
 

@@ -25,7 +25,6 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
     #                                   refresh_by_access_allowed: true )
     @tokens = session.login
     #JWTSessions.access_exp_time = 3600
-    #pp 'in before do'
   end
 
   # This should return the minimal set of values that should be in the session
@@ -68,7 +67,6 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
 
       it 'creates a new listing with an image' do
         file = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
-        user = FactoryBot.create(:user)
 
         expect {
           post :create, params: { listing: FactoryBot.create(:listing, images: [file], user: user) }
@@ -78,7 +76,6 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
       it 'creates a new listing with multiple images' do
         file1 = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
         file2 = fixture_file_upload('spec/fixtures/files/chaumont.png', 'image/png')
-        user = FactoryBot.create(:user)
 
         expect {
           post :create, params: { listing: FactoryBot.create(:listing, images: [file1, file2], user: user) }
@@ -110,7 +107,16 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
   describe 'PUT #update' do
     let!(:listing) { FactoryBot.create(:listing, user: user)}
 
+    let!(:listing_with_files) {
+      file1 = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
+      file2 = fixture_file_upload('spec/fixtures/files/chaumont.png', 'image/png')
+
+      FactoryBot.attributes_for(:listing,
+                                images: [file1, file2])
+    }
+
     context 'with valid params' do
+
       let(:new_attributes) {
         { title: 'cool title' }
       }
@@ -138,9 +144,8 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
         request.cookies[JWTSessions.access_cookie] = @tokens[:access]
         request.headers[JWTSessions.csrf_header] = @tokens[:csrf]
 
-        file = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
         put :update, params: { id: listing.to_param,
-                               listing: FactoryBot.attributes_for(:listing, image: file) }
+                               listing: FactoryBot.attributes_for(:listing, image: :with_image) }
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
@@ -150,11 +155,8 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
       request.cookies[JWTSessions.access_cookie] = @tokens[:access]
       request.headers[JWTSessions.csrf_header] = @tokens[:csrf]
 
-      file1 = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
-      file2 = fixture_file_upload('spec/fixtures/files/chaumont.png', 'image/png')
-
       put :update, params: { id: listing.to_param,
-                             listing: FactoryBot.attributes_for(:listing, images: [file1, file2]) }
+                             listing: listing_with_files }
       expect(response).to have_http_status(:ok)
       expect(response.content_type).to eq('application/json; charset=utf-8')
     end
@@ -175,7 +177,8 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
         request.headers[JWTSessions.csrf_header] = @tokens[:csrf]
 
         put :update, params: { id: listing.to_param,
-                               listing: FactoryBot.attributes_for(:listing, listing_type_id: nil)}
+                               listing: FactoryBot.attributes_for(:listing,
+                                                                  listing_type_id: nil)}
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
@@ -184,6 +187,7 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
 
   describe 'DELETE #destroy' do
     let!(:listing) { FactoryBot.create(:listing, user: user) }
+
     it 'destroys the requested listing' do
       request.cookies[JWTSessions.access_cookie] = @tokens[:access]
       request.headers[JWTSessions.csrf_header] = @tokens[:csrf]

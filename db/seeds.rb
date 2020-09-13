@@ -7,18 +7,19 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 #
-ListingType.create([{ name: 'offer',
-                                      description: 'giving',
-                                      is_active: 1 },
-                                    { name: 're quest',
-                                      description: 'getting',
-                                      is_active: 1 }
-                                   ])
 
-Listing.create([{ title: '5000 Pencils',
-                             description: '50 boxes of type 2 pencils',
-                             listing_type_id: 1 },
-                           {title: 'Size 11 Construction Boots',
-                            description: 'Looking for boots for work',
-                            listing_type_id: 2 }
-                          ])
+5.times do
+  user = User.create(email: Faker::Internet.email, password_digest: Faker::Internet.password)
+
+  3.times do
+    user.listings.create(title: Faker::Appliance.equipment,
+                         description: Faker::Lorem.sentence(word_count: 8),
+                         listing_type: 'offering')
+  end
+
+  2.times do
+    user.listings.create(title: Faker::Appliance.equipment,
+                         description: Faker::Appliance.equipment,
+                         listing_type: 'request')
+  end
+end

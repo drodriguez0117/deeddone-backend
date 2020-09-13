@@ -3,7 +3,7 @@ FactoryBot.define {
     #association :user
     title { 'Shoes' }
     description { 'tiny shoes' }
-    listing_type_id { 1 }
+    listing_type { 'offering' }
     user { nil }
 
     trait :with_image do

@@ -14,7 +14,10 @@ module Api
       # GET /listings/1
       # GET /listings/1.json
       def show
-        render json: @listing, status: :ok
+        # @listings = Listing.find(params[:id])
+        logger.debug "user_id: #{params[:id]}"
+        @listings = Listing.find_by_user_id(params[:id])
+        render json: @listings, status: :ok
       end
 
       # POST /listings
@@ -64,7 +67,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def listing_params
-        params.require(:listing).permit(:title, :description, :listing_type_id, images: [])
+        params.require(:listing).permit(:title, :description, :listing_type, images: [])
       end
     end
   end

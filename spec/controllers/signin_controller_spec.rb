@@ -10,7 +10,7 @@ RSpec.describe SigninController, type: :controller do
     it 'returns http success' do
       get :create, params: user_params
       expect(response).to be_successful
-      expect(response_json.keys).to eq ['csrf']
+      expect(response_json.keys).to eq ['csrf', 'id', 'email']
       expect(response.cookies[JWTSessions.access_cookie]).to be_present
     end
 

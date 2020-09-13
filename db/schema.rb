@@ -36,23 +36,14 @@ ActiveRecord::Schema.define(version: 2020_04_22_022433) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "listing_types", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.boolean "is_active"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "listings", force: :cascade do |t|
     t.string "title", null: false
     t.string "description"
-    t.bigint "listing_type_id", null: false
+    t.string "listing_type", null: false
     t.boolean "is_active", default: true, null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["listing_type_id"], name: "index_listings_on_listing_type_id"
     t.index ["user_id"], name: "index_listings_on_user_id"
   end
 

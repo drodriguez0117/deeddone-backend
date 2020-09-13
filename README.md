@@ -5,7 +5,7 @@ This will have User Authentication and Authorization
 
 ## Technologies:
 * Ruby 2.6.3
-* Rails 6.0.2.1
+* Rails 6.0.3.1
   * ActiveStorage with multiple files
 * PostgreSQL 
 

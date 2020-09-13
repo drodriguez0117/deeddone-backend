@@ -6,14 +6,17 @@ class SigninController < ApplicationController
     if user.authenticate(session_params[:password])
       payload = { user_id: user.id }
       session = JWTSessions::Session.new(payload: payload,
-                                         refresh_by_access_allowed: true)
+                                         refresh_by_access_allowed: true,
+                                         namespace: "user_#{user.id}")
       tokens = session.login
+      logger.debug "tokens_access: #{user.email}"
 
       response.set_cookie(JWTSessions.access_cookie,
                           value: tokens[:access],
                           httponly: true,
                           secure: Rails.env.production?)
-      render json: { csrf: tokens[:crsf]}
+      logger.debug "after response: #{tokens[:csrf]}"
+      render json: { csrf: tokens[:csrf], id: user.id, email: user.email }
     else
       not_authorized
     end
@@ -23,6 +26,7 @@ class SigninController < ApplicationController
     session = JWTSessions::Session.new(payload: payload,
                                        namespace: "user_#{payload['user_id']}")
     session.flush_by_access_payload
+    logger.debug "in destroy"
     render json: :ok
   end
 

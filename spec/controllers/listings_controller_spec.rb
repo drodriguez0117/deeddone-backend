@@ -17,6 +17,10 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
     FactoryBot.attributes_for(:listing, title: nil)
   }
 
+  let(:invalid_listing_type) {
+    FactoryBot.attributes_for(:listing, listing_type: 'idk')
+  }
+
   before do
     #JWTSessions.access_exp_time = 0
     payload = { user_id: user.id }
@@ -101,6 +105,15 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
+
+      it 'renders JSON response with errors with invalid listing_type' do
+        request.cookies[JWTSessions.access_cookie] = @tokens[:access]
+        request.headers[JWTSessions.csrf_header] = @tokens[:csrf]
+
+        post :create, params: { listing: invalid_listing_type }
+
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
     end
   end
 
@@ -172,13 +185,13 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
 
-      it 'renders a JSON response with errors for listing without type id' do
+      it 'renders a JSON response with errors for listing without type' do
         request.cookies[JWTSessions.access_cookie] = @tokens[:access]
         request.headers[JWTSessions.csrf_header] = @tokens[:csrf]
 
         put :update, params: { id: listing.to_param,
                                listing: FactoryBot.attributes_for(:listing,
-                                                                  listing_type_id: nil)}
+                                                                  listing_type: nil)}
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end

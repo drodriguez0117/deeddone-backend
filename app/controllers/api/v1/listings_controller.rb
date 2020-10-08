@@ -1,14 +1,24 @@
+# frozen_string_literal: true
 module Api
   module V1
     class ListingsController < ApplicationController
-      before_action :authorize_access_request!, except: [:show, :index]
-      before_action :set_listing, only: [:update, :destroy]
+      before_action :authorize_access_request!, except: %i[show index]
+      before_action :set_listing, only: %i[update destroy]
 
       # GET /listings
       # GET /listings.json
       def index
-        @listings = Listing.all
-        render json: @listings
+        @listings = Listing.all.with_attached_images
+
+        render json: @listings.map { |listing|
+          listing.as_json.merge({ images: listing.images.map do |img|
+                                            { image: rails_blob_url(img, only_path: true)} end }) }
+
+        #render json: @listing.images.map do |image|
+        #rails_blob_path(image, only_path: true) if object.images.attached?
+        #end
+
+        #render json: @listings
       end
 
       # GET /listings/1
@@ -16,7 +26,7 @@ module Api
       def show
         # @listings = Listing.find(params[:id])
         logger.debug "user_id: #{params[:id]}"
-        @listings = Listing.find_by_user_id(params[:id])
+        @listings = Listing.where(user_id: params[:id])
         render json: @listings, status: :ok
       end
 

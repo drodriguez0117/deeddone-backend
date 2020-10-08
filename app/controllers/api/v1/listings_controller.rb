@@ -10,10 +10,7 @@ module Api
       def index
         @listings = Listing.all.with_attached_images
 
-        render json: @listings.map { |listing|
-          listing.as_json.merge({ images: listing.images.map do |img|
-                                            { image: rails_blob_url(img, only_path: true)} end }) }
-
+        render json: add_image_to_listing
         #render json: @listing.images.map do |image|
         #rails_blob_path(image, only_path: true) if object.images.attached?
         #end
@@ -27,7 +24,10 @@ module Api
         # @listings = Listing.find(params[:id])
         logger.debug "user_id: #{params[:id]}"
         @listings = Listing.where(user_id: params[:id])
-        render json: @listings, status: :ok
+
+        render json: add_image_to_listing
+
+          #render json: @listings, status: :ok
       end
 
       # POST /listings
@@ -78,6 +78,12 @@ module Api
       # Only allow a list of trusted parameters through.
       def listing_params
         params.require(:listing).permit(:title, :description, :listing_type, images: [])
+      end
+
+      def add_image_to_listing
+        @listings.map { |listing|
+          listing.as_json.merge({ images: listing.images.map do |img|
+            { image: rails_blob_url(img, only_path: true)} end }) }
       end
     end
   end

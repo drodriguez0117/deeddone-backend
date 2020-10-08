@@ -1,8 +1,10 @@
 FactoryBot.define {
   factory :listing do
+    #association :user
     title { 'Shoes' }
     description { 'tiny shoes' }
-    listing_type_id { 1 }
+    listing_type { 'offering' }
+    user { nil }
 
     trait :with_image do
       after :build do |listing|
@@ -12,5 +14,6 @@ FactoryBot.define {
                              content_type: 'image/jpeg')
       end
     end
+    #new factory or trait with associations - listing_with_user
   end
 }

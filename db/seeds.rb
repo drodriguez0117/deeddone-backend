@@ -9,17 +9,28 @@
 #
 
 5.times do
-  user = User.create(email: Faker::Internet.email, password_digest: Faker::Internet.password)
+  user = User.create(email: Faker::Internet.email,
+                     password_digest: BCrypt::Password.create('test'))
 
   3.times do
-    user.listings.create(title: Faker::Appliance.equipment,
+    v = user.listings.create(title: Faker::Appliance.equipment,
                          description: Faker::Lorem.sentence(word_count: 8),
                          listing_type: 'offering')
+
+    file_path = 'spec/fixtures/files/melvin.jpg'
+    v.images.attach(io: File.open(file_path),
+                         filename: 'melvin.jpg',
+                         content_type: 'image/jpeg')
   end
 
   2.times do
-    user.listings.create(title: Faker::Appliance.equipment,
+    g = user.listings.create(title: Faker::Appliance.equipment,
                          description: Faker::Appliance.equipment,
                          listing_type: 'request')
+
+    #file_path = 'spec/fixtures/files/melvin.jpg'
+    #g.images.attach(io: File.open(file_path),
+    #                filename: 'melvin.jpg',
+    #                content_type: 'image/jpeg')
   end
 end

@@ -11,31 +11,21 @@ module Api
         @listings = Listing.all.with_attached_images
 
         render json: add_image_to_listing
-        #render json: @listing.images.map do |image|
-        #rails_blob_path(image, only_path: true) if object.images.attached?
-        #end
-
-        #render json: @listings
       end
 
       # GET /listings/1
       # GET /listings/1.json
       def show
-        # @listings = Listing.find(params[:id])
         logger.debug "user_id: #{params[:id]}"
         @listings = Listing.where(user_id: params[:id])
 
         render json: add_image_to_listing
-
-          #render json: @listings, status: :ok
       end
 
       # POST /listings
       # POST /listings.json
       def create
         @listing = current_user.listings.build(listing_params)
-        #@listing = Listing.new(listing_params)
-        #@listing.user = current_user
 
         if @listing.save
           render json: @listing, status: :created

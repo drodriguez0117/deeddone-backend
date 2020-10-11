@@ -17,4 +17,11 @@ class Listing < ApplicationRecord
     end
   end
 
+  def default_image
+    # if exists > 0 -> get first image
+    # else -> use category and get the default
+    #
+    # test when not found
+  end
+
 end

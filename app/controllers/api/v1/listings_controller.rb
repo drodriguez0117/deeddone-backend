@@ -16,7 +16,7 @@ module Api
       # GET /listings/1
       # GET /listings/1.json
       def show
-        logger.debug "user_id: #{params[:id]}"
+        #logger.debug "user_id: #{params[:id]}"
         @listings = Listing.where(user_id: params[:id])
 
         render json: add_image_to_listing
@@ -70,6 +70,7 @@ module Api
         params.require(:listing).permit(:title, :description, :listing_type, images: [])
       end
 
+      # move to model
       def add_image_to_listing
         @listings.map { |listing|
           listing.as_json.merge({ images: listing.images.map do |img|

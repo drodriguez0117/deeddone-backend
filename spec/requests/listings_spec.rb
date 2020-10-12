@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Listings', type: :request do
-  describe 'GET api/v1/listings' do
+  describe 'GET /listings' do
     it 'returns ok status' do
-      get '/api/v1/listings'
+      get '/listings'
       expect(response).to have_http_status(200)
     end
   end
@@ -12,7 +12,7 @@ RSpec.describe 'Listings', type: :request do
     let!(:user) { FactoryBot.create(:user) }
     let!(:listings) { FactoryBot.create_list(:listing, 20, user: user) }
 
-    before {get '/api/v1/listings'}
+    before {get '/listings'}
 
     it 'returns all listings' do
       expect(JSON.parse(response.body).size).to eq(20)

@@ -38,7 +38,7 @@ module Api
           end
 
           if @listing.update(listing_params)
-            render json: @listing, status: :ok, location: api_v1_listing_url(@listing)
+            render json: @listing, status: :ok, location: admin_listing_url(@listing)
           else
             render json: @listing.errors, status: :unprocessable_entity
           end

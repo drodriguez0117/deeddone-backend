@@ -4,18 +4,12 @@ Rails.application.routes.draw do
   post 'signup', controller: :signup, action: :create
   delete 'signin', controller: :signin, action: :destroy
 
-  namespace :api do
-    namespace :v1 do
-      resources :listings, only: [:index, :show]
-    end
+  scope module: 'api/v1' do
+    resources :listings, only: [:index, :show]
   end
 
-  namespace :api do
-    namespace :v1 do
-      namespace :admin do
-        resources :listings
-      end
-    end
+  scope module: 'api/v1/admin', path: 'admin', as: 'admin' do
+    resources :listings
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

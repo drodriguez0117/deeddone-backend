@@ -4,32 +4,32 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :routing do
   describe 'routing' do
 
     it 'routes to #show' do
-      expect(get: '/api/v1/admin/listings/1').to route_to('api/v1/admin/listings#show', id: '1')
+      expect(get: 'admin/listings/1').to route_to('api/v1/admin/listings#show', id: '1')
     end
 
     it 'routes to #create' do
-      expect(post: '/api/v1/admin/listings').to route_to('api/v1/admin/listings#create')
+      expect(post: 'admin/listings').to route_to('api/v1/admin/listings#create')
     end
 
     it 'routes to #update via PUT' do
-      expect(put: '/api/v1/admin/listings/1').to route_to('api/v1/admin/listings#update', id: '1')
+      expect(put: 'admin/listings/1').to route_to('api/v1/admin/listings#update', id: '1')
     end
 
     it 'routes to #update via PATCH' do
-      expect(patch: '/api/v1/admin/listings/1').to route_to('api/v1/admin/listings#update', id: '1')
+      expect(patch: 'admin/listings/1').to route_to('api/v1/admin/listings#update', id: '1')
     end
 
     it 'routes to #destroy' do
-      expect(delete: '/api/v1/admin/listings/1').to route_to('api/v1/admin/listings#destroy', id: '1')
+      expect(delete: 'admin/listings/1').to route_to('api/v1/admin/listings#destroy', id: '1')
     end
 
     specify {
-      expect(get: api_v1_admin_listing_path(1)).to route_to(controller: 'api/v1/admin/listings',
+      expect(get: admin_listing_path(1)).to route_to(controller: 'api/v1/admin/listings',
                                                       action: 'show',
                                                       id: '1')}
 
     specify {
-      expect(get: '/api/v1/admin/listings/1').to route_to(controller: 'api/v1/admin/listings',
+      expect(get: 'admin/listings/1').to route_to(controller: 'api/v1/admin/listings',
                                                     action: 'show',
                                                     id: '1')}
   end

@@ -4,18 +4,17 @@ Rails.application.routes.draw do
   post 'signup', controller: :signup, action: :create
   delete 'signin', controller: :signin, action: :destroy
 
-  #scope module: 'api' do
-  #  scope module: 'v1' do
-  #    resources :listings
-  #  end
-  #end
+  namespace :api do
+    namespace :v1 do
+      resources :listings, only: [:index, :show]
+    end
+  end
 
   namespace :api do
     namespace :v1 do
-      resources :listings
-      #resources :users do
-      # resource listings
-      #
+      namespace :admin do
+        resources :listings
+      end
     end
   end
 

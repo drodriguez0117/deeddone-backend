@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'support/active_storage_helpers'
 require 'pp'
 
-RSpec.describe Api::V1::ListingsController, type: :controller do
+RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
 
   let(:valid_attributes) {
@@ -35,15 +35,6 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
   # in order to pass any filters (e.g. authentication) defined in
   # ListingsController. Be sure to keep this updated too.
   #let(:valid_session) { {} },.
-
-  describe 'GET #index' do
-    it 'returns a success response' do
-      request.cookies[JWTSessions.access_cookie] = @tokens[:access]
-
-      get :index, params: {}
-      expect(response).to be_successful
-    end
-  end
 
   describe 'GET #show' do
     let!(:listing) { FactoryBot.create(:listing, user: user) }
@@ -210,5 +201,4 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
       }.to change(Listing, :count).by(-1)
     end
   end
-
 end

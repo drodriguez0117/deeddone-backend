@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SignupController, type: :controller do
+RSpec.describe RegisterController, type: :controller do
 
   describe 'POST #create' do
     let(:user_params) {

@@ -2,12 +2,12 @@ require 'rails_helper'
 
 RSpec.describe RegisterController, type: :controller do
 
-  describe 'POST #create' do
+  describe '#create' do
     let(:user_params) {
       { email: 'test@domain.com', password: 'password', password_confirmation: 'password'}
     }
 
-    it 'returns http succes' do
+    it 'returns http success' do
       post :create, params: user_params
       expect(response).to be_successful
       expect(response_json.keys).to eq ['csrf']

@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   delete 'login', controller: :login, action: :destroy
 
   scope module: 'api/v1' do
-    resources :listings, only: [:index, :show]
+    resources :listings, only: %i[index show]
   end
 
   scope module: 'api/v1/admin', path: 'admin', as: 'admin' do

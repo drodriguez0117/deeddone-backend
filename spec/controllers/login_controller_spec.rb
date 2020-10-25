@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe LoginController, type: :controller do
   let(:user) { create(:user) }
 
-  describe 'POST #create' do
+  describe '#create' do
     let(:password) { 'password' }
     let(:user_params) { { email: user.email, password: password } }
 
@@ -20,7 +20,7 @@ RSpec.describe LoginController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do
+  describe '#destroy' do
     context 'failure' do
       it 'returns unauthorized http status' do
         delete :destroy

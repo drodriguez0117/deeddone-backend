@@ -1,6 +1,5 @@
 require 'rails_helper'
 require 'support/active_storage_helpers'
-require 'pp'
 
 RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
@@ -36,7 +35,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   # ListingsController. Be sure to keep this updated too.
   #let(:valid_session) { {} },.
 
-  describe 'GET #show' do
+  describe '#show' do
     let!(:listing) { FactoryBot.create(:listing, user: user) }
 
     it 'returns a success response' do
@@ -48,7 +47,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
     end
   end
 
-  describe 'POST #create' do
+  describe '#create' do
     context 'with valid params' do
 
       it 'creates a new listing' do
@@ -108,7 +107,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
     end
   end
 
-  describe 'PUT #update' do
+  describe '#update' do
     let!(:listing) { FactoryBot.create(:listing, user: user)}
 
     let!(:listing_with_files) {
@@ -189,7 +188,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do
+  describe '#destroy' do
     let!(:listing) { FactoryBot.create(:listing, user: user) }
 
     it 'destroys the requested listing' do

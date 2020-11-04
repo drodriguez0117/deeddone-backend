@@ -1,4 +1,4 @@
-class SigninController < ApplicationController
+class LoginController < ApplicationController
   before_action :authorize_access_request!, only: [:destroy]
 
   def create

@@ -2,8 +2,11 @@
 class Listing < ApplicationRecord
   validates_presence_of :title, :listing_type
 
-  validate :validate_listing_type
+  validates_length_of :title, maximum: 30
+  validates_length_of :description, maximum: 200
 
+  validate :validate_listing_type
+  
   belongs_to :user
 
   has_many_attached :images

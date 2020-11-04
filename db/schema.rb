@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(version: 2020_04_22_022433) do
   end
 
   create_table "listings", force: :cascade do |t|
-    t.string "title", null: false
-    t.string "description"
+    t.string "title", limit: 30, null: false
+    t.string "description", limit: 200
     t.string "listing_type", null: false
     t.boolean "is_active", default: true, null: false
     t.bigint "user_id", null: false

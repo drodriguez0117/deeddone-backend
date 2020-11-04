@@ -15,7 +15,7 @@ module Api
       # GET /listings/1.json
       def show
         #logger.debug "user_id: #{params[:id]}"
-        @listings = Listing.where(user_id: params[:id])
+        @listings = Listing.where(id: params[:id])
 
         render json: add_image_to_listing
       end

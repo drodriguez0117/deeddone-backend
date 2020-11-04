@@ -4,7 +4,7 @@ RSpec.describe RefreshController, type: :controller do
   let(:access_cookie) { @tokens[:access] }
   let(:csrf_token) { @tokens[:csrf] }
 
-  describe 'POST #create' do
+  describe '#create' do
     let(:user) { create(:user) }
 
     context 'success' do

@@ -71,4 +71,14 @@ RSpec.describe Listing, type: :model do
                                                    user: user))).to be_valid
     end
   end
+
+  context '#images_or_default' do
+    it 'should return image string when using default'
+    it 'should return images'
+  end
+
+  context '#as_json' do
+    it 'should create object with image'
+    it 'should create object without image'
+  end
 end

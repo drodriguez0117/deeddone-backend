@@ -8,23 +8,16 @@ module Api
       def index
         @listings = Listing.all.with_attached_images
 
-        render json: add_image_to_listing
+        render json: @listings
       end
 
       # GET /listings/1
       # GET /listings/1.json
       def show
         #logger.debug "user_id: #{params[:id]}"
-        @listings = Listing.where(id: params[:id])
+        @listing = Listing.where(id: params[:id])
 
-        render json: add_image_to_listing
-      end
-
-      # move to model
-      def add_image_to_listing
-        @listings.map { |listing|
-          listing.as_json.merge({ images: listing.images.map do |img|
-            { image: rails_blob_url(img, only_path: true)} end }) }
+        render json: @listing
       end
     end
   end

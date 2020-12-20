@@ -59,7 +59,7 @@ module Api
 
         # Only allow a list of trusted parameters through.
         def listing_params
-          params.require(:listing).permit(:title, :description, :listing_type, images: [])
+          params.require(:listing).permit(:title, :description, :listing_type, :category_id, images: [])
         end
 
         # move to model

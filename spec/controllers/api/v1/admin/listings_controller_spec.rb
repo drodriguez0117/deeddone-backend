@@ -3,9 +3,10 @@ require 'support/active_storage_helpers'
 
 RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
+  let(:category) { FactoryBot.create(:category)}
 
   let(:valid_attributes) {
-    FactoryBot.attributes_for(:listing)
+    FactoryBot.attributes_for(:listing, category_id: category.id)
   }
 
   let(:valid_attributes_with_image) {
@@ -21,13 +22,9 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   }
 
   before do
-    #JWTSessions.access_exp_time = 0
     payload = { user_id: user.id }
     session = JWTSessions::Session.new(payload: payload)
-    #session = JWTSessions::Session.new(payload: payload,
-    #                                   refresh_by_access_allowed: true )
     @tokens = session.login
-    #JWTSessions.access_exp_time = 3600
   end
 
   # This should return the minimal set of values that should be in the session
@@ -36,7 +33,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   #let(:valid_session) { {} },.
 
   describe '#show' do
-    let!(:listing) { FactoryBot.create(:listing, user: user) }
+    let!(:listing) { FactoryBot.create(:listing, category: category, user: user)}
 
     it 'returns a success response' do
       request.cookies[JWTSessions.access_cookie] = @tokens[:access]
@@ -63,7 +60,12 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
         file = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
 
         expect {
-          post :create, params: { listing: FactoryBot.create(:listing, images: [file], user: user) }
+          post :create, params: { listing:
+                                    FactoryBot.create(:listing,
+                                                      category_id: category.id,
+                                                      images: [file],
+                                                      user: user)
+          }
         }.to change{ ActiveStorage::Attachment.count }.by(1)
       end
 
@@ -72,7 +74,12 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
         file2 = fixture_file_upload('spec/fixtures/files/chaumont.png', 'image/png')
 
         expect {
-          post :create, params: { listing: FactoryBot.create(:listing, images: [file1, file2], user: user) }
+          post :create, params: { listing:
+                                    FactoryBot.create(:listing,
+                                                      category_id: category.id,
+                                                      images: [file1, file2],
+                                                      user: user)
+          }
         }.to change{ ActiveStorage::Attachment.count }.by(2)
       end
 
@@ -108,8 +115,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   end
 
   describe '#update' do
-    let!(:listing) { FactoryBot.create(:listing, user: user)}
-
+    let!(:listing) { FactoryBot.create(:listing, category_id: category.id, user: user) }
     let!(:listing_with_files) {
       file1 = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
       file2 = fixture_file_upload('spec/fixtures/files/chaumont.png', 'image/png')
@@ -189,7 +195,10 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   end
 
   describe '#destroy' do
-    let!(:listing) { FactoryBot.create(:listing, user: user) }
+    let!(:listing) { 
+      FactoryBot.create(:listing,
+                        category_id: category.id,
+                        user: user) }
 
     it 'destroys the requested listing' do
       request.cookies[JWTSessions.access_cookie] = @tokens[:access]

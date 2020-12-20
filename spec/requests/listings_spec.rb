@@ -10,7 +10,8 @@ RSpec.describe 'Listings', type: :request do
 
   describe 'get all listings route' do
     let!(:user) { FactoryBot.create(:user) }
-    let!(:listings) { FactoryBot.create_list(:listing, 20, user: user) }
+    let!(:category) { FactoryBot.create(:category)}
+    let!(:listings) { FactoryBot.create_list(:listing, 20, user: user, category_id: category.id) }
 
     before {get '/listings'}
 

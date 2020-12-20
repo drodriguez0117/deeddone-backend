@@ -36,14 +36,22 @@ ActiveRecord::Schema.define(version: 2020_04_22_022433) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.string "name", limit: 200, null: false
+    t.string "default_image_path", limit: 500
+    t.boolean "is_active", default: true
+  end
+
   create_table "listings", force: :cascade do |t|
     t.string "title", limit: 30, null: false
     t.string "description", limit: 200
     t.string "listing_type", null: false
     t.boolean "is_active", default: true, null: false
     t.bigint "user_id", null: false
+    t.bigint "category_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_listings_on_category_id"
     t.index ["user_id"], name: "index_listings_on_user_id"
   end
 
@@ -55,5 +63,6 @@ ActiveRecord::Schema.define(version: 2020_04_22_022433) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "listings", "categories"
   add_foreign_key "listings", "users"
 end

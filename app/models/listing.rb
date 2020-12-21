@@ -20,8 +20,7 @@ class Listing < ApplicationRecord
       end
     else
       # tests on  model
-      [{ image: ActionController::Base.helpers.asset_url(category.default_image_path,
-                                                         only_path: true) }]
+      [{ image: ActionController::Base.helpers.asset_url(category.default_image_path, type: :image) }]
     end
   end
 

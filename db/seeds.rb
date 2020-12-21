@@ -12,32 +12,31 @@ Category.destroy_all
 o = Category.create(name: 'outdoors', default_image_path: 'chaumont.png', is_active: true)
 i = Category.create(name: 'indoors', default_image_path: 'oh_yeah.jpg', is_active: true)
 
-5.times do
+2.times do
   user = User.create(email: Faker::Internet.email,
                      password_digest: BCrypt::Password.create('test'))
-
-  3.times do
+  2.times do
     v = user.listings.create(title: Faker::Appliance.equipment,
                              description: Faker::Lorem.sentence(word_count: 8),
                              listing_type: 'offering',
                              category_id: o.id
                           )
-
-    file_path = 'spec/fixtures/files/melvin.jpg'
-    v.images.attach(io: File.open(file_path),
-                         filename: 'melvin.jpg',
-                         content_type: 'image/jpeg')
   end
-
-  2.times do
+  1.times do
+    m = user.listings.create(title: Faker::Appliance.equipment,
+                             description: Faker::Lorem.sentence(word_count: 8),
+                             listing_type: 'offering',
+                             category_id: o.id
+    )
+    file_path = 'spec/fixtures/files/melvin.jpg'
+    m.images.attach(io: File.open(file_path),
+                    filename: 'melvin.jpg',
+                    content_type: 'image/jpeg')
+  end
+  1.times do
     g = user.listings.create(title: Faker::Appliance.equipment,
                              description: Faker::Appliance.equipment,
                              listing_type: 'request',
                              category_id: i.id)
-
-    #file_path = 'spec/fixtures/files/melvin.jpg'
-    #g.images.attach(io: File.open(file_path),
-    #                filename: 'melvin.jpg',
-    #                content_type: 'image/jpeg')
   end
 end

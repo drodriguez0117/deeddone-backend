@@ -82,11 +82,57 @@ RSpec.describe Listing, type: :model do
   end
 
   context '#images_or_default' do
-    it 'should return image string when using default'
-    it 'should return images'
+    let(:simple_listing)      { FactoryBot.build(:listing, category: category, user: user) }
+    let(:category_two)        { FactoryBot.build(:category, default_image_path: 'fixtures/files/melvin.jpg') }
+    let(:simple_listing_two)  { FactoryBot.build(:listing, category: category_two, user: user) }
+
+    let(:category_asset_default_path)     { ActionController::Base.helpers.asset_url(category.default_image_path, type: :image) }
+    let(:category_two_asset_default_path) { ActionController::Base.helpers.asset_url(category_two.default_image_path, type: :image) }
+
+    #let(:image_listing) { FactoryBot.build(:listing, category: category, user: user, images: []) }
+
+    it 'should return a default image url with a valid structure' do
+      expect(simple_listing.images_or_default).to be_a Array
+      expect(simple_listing.images_or_default.count).to eq 1
+      expect(simple_listing.images_or_default[0].key?(:image)).to eq true
+    end
+
+    it 'should return a default image url from the category' do
+      expect(simple_listing.images_or_default[0][:image]).to_not eq category_two_asset_default_path
+      expect(simple_listing.images_or_default[0][:image]).to eq category_asset_default_path
+
+      expect(simple_listing_two.images_or_default[0][:image]).to_not eq category_asset_default_path
+      expect(simple_listing_two.images_or_default[0][:image]).to eq category_two_asset_default_path
+    end
+
+    it 'should return a valid structure for listing images' do
+      file = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
+      listing = FactoryBot.create(:listing, user: user, category: category, images: [file])
+
+      expect(listing.images_or_default).to be_a Array
+      expect(listing.images_or_default[0].key?(:image)).to eq true
+    end
+
+    it 'should return a listing image' do
+      file = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
+      listing = FactoryBot.create(:listing, user: user, category: category, images: [file])
+
+      expect(listing.images_or_default.count).to eq 1
+      expect(listing.images_or_default[0][:image]).to_not eq category_asset_default_path
+    end
+
+    it 'should return listing images' do
+      file = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
+      listing = FactoryBot.build(:listing, user: user, category: category, images: [file, file])
+
+      expect(listing.images_or_default.count).to eq 2
+    end
+
   end
 
   context '#as_json' do
+    let(:image_listing) { FactoryBot.create(:listing, category: category, user: user, images: []) }
+
     it 'should create object with image'
     it 'should create object without image'
   end

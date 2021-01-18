@@ -9,8 +9,8 @@
 #
 Category.destroy_all
 
-o = Category.create(name: 'outdoors', default_image_path: 'chaumont.png', is_active: true)
-i = Category.create(name: 'indoors', default_image_path: 'oh_yeah.jpg', is_active: true)
+o = Category.create(name: 'outdoors', default_image_path: 'caulk.jpg', is_active: true)
+i = Category.create(name: 'indoors', default_image_path: 'mower.jpg', is_active: true)
 
 2.times do
   user = User.create(email: Faker::Internet.email,

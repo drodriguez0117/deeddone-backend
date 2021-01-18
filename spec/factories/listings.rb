@@ -4,7 +4,6 @@ FactoryBot.define {
     description { 'tiny shoes' }
     listing_type { 'offering' }
     user { nil }
-    #category_id factory: :category, id: 4
 
     trait :with_image do
       after :build do |listing|
@@ -14,5 +13,8 @@ FactoryBot.define {
                              content_type: 'image/jpeg')
       end
     end
+
+    # create multiple listings
+    #
   end
 }

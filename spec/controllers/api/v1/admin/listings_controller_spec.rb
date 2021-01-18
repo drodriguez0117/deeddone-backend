@@ -33,9 +33,9 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   #let(:valid_session) { {} },.
 
   describe '#show' do
-    let!(:listing) { FactoryBot.create(:listing, category: category, user: user)}
+    let(:listing) { FactoryBot.create(:listing, category: category, user: user)}
 
-    it 'returns a success response' do
+    it 'returns a successful response' do
       request.cookies[JWTSessions.access_cookie] = @tokens[:access]
 
       get :show, params: { id: listing.id }
@@ -45,8 +45,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   end
 
   describe '#create' do
-    context 'with valid params' do
-
+    context 'valid params' do
       it 'creates a new listing' do
         request.cookies[JWTSessions.access_cookie] = @tokens[:access]
         request.headers[JWTSessions.csrf_header] = @tokens[:csrf]
@@ -93,8 +92,8 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
       end
     end
 
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the new listing' do
+    context 'invalid params' do
+      it 'renders a JSON response with errors' do
         request.cookies[JWTSessions.access_cookie] = @tokens[:access]
         request.headers[JWTSessions.csrf_header] = @tokens[:csrf]
 
@@ -103,7 +102,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
 
-      it 'renders JSON response with errors with invalid listing_type' do
+      it 'invalid listing_type renders JSON response with errors' do
         request.cookies[JWTSessions.access_cookie] = @tokens[:access]
         request.headers[JWTSessions.csrf_header] = @tokens[:csrf]
 
@@ -115,8 +114,8 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   end
 
   describe '#update' do
-    let!(:listing) { FactoryBot.create(:listing, category_id: category.id, user: user) }
-    let!(:listing_with_files) {
+    let(:listing) { FactoryBot.create(:listing, category_id: category.id, user: user) }
+    let(:listing_with_files) {
       file1 = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
       file2 = fixture_file_upload('spec/fixtures/files/chaumont.png', 'image/png')
 
@@ -124,8 +123,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
                                 images: [file1, file2])
     }
 
-    context 'with valid params' do
-
+    context 'valid params' do
       let(:new_attributes) {
         { title: 'cool title' }
       }
@@ -158,20 +156,20 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
+
+      it 'renders a JSON response for a listing with multiple images' do
+        request.cookies[JWTSessions.access_cookie] = @tokens[:access]
+        request.headers[JWTSessions.csrf_header] = @tokens[:csrf]
+
+        put :update, params: { id: listing.to_param,
+                               listing: listing_with_files }
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to eq('application/json; charset=utf-8')
+      end
     end
 
-    it 'renders a JSON response for a listing with multiple images' do
-      request.cookies[JWTSessions.access_cookie] = @tokens[:access]
-      request.headers[JWTSessions.csrf_header] = @tokens[:csrf]
-
-      put :update, params: { id: listing.to_param,
-                             listing: listing_with_files }
-      expect(response).to have_http_status(:ok)
-      expect(response.content_type).to eq('application/json; charset=utf-8')
-    end
-
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the listing' do
+    context 'invalid params' do
+      it 'renders a JSON response with errors' do
         request.cookies[JWTSessions.access_cookie] = @tokens[:access]
         request.headers[JWTSessions.csrf_header] = @tokens[:csrf]
 
@@ -181,7 +179,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
 
-      it 'renders a JSON response with errors for listing without type' do
+      it 'listing without a listing_type renders a JSON response with errors' do
         request.cookies[JWTSessions.access_cookie] = @tokens[:access]
         request.headers[JWTSessions.csrf_header] = @tokens[:csrf]
 
@@ -192,10 +190,11 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end
     end
+
   end
 
   describe '#destroy' do
-    let!(:listing) { 
+    let!(:listing) {
       FactoryBot.create(:listing,
                         category_id: category.id,
                         user: user) }

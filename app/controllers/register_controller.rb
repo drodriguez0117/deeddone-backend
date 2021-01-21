@@ -11,7 +11,7 @@ class RegisterController < ApplicationController
                           value: token[:access],
                           httponly: true,
                           secure: Rails.env.production?)
-      render json: { csrf: token[:csrf] }
+      render json: { csrf: token[:csrf], id: user.id, email: user.email }
     else
       render json: { error: user.errors.full_messages.join(' '),
                      status: :unprocessable_entity}

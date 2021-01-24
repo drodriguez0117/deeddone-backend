@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Listing < ApplicationRecord
   validates_presence_of :title, :listing_type
 
@@ -23,7 +24,7 @@ class Listing < ApplicationRecord
     end
   end
 
-  def as_json(options={})
+  def as_json(_options = {})
     {
       id: id,
       title: title,
@@ -39,10 +40,9 @@ class Listing < ApplicationRecord
   private
 
   def validate_listing_type
-    #debugger
+    # debugger
     unless listing_type == 'offering' || listing_type == 'request'
       errors.add(:listing_type, ' is invalid')
     end
   end
-
 end

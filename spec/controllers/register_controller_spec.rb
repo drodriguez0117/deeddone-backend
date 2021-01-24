@@ -1,13 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe RegisterController, type: :controller do
-
   describe '#create' do
-    let(:user_params) {
+    let(:user_params) do
       { email: 'test@domain.com',
         password: 'password',
-        password_confirmation: 'password'}
-    }
+        password_confirmation: 'password' }
+    end
 
     it 'returns http success' do
       post :create, params: user_params
@@ -21,11 +22,11 @@ RSpec.describe RegisterController, type: :controller do
     end
 
     it 'increases count' do
-      expect {
+      expect do
         post :create, params: user_params
-      }.to change(User, :count).by(1)
+      end.to change(User, :count).by(1)
     end
-
+    
     # factorybot create
     # post
     #

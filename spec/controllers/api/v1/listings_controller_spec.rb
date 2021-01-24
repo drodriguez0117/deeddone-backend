@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'support/active_storage_helpers'
 
 RSpec.describe Api::V1::ListingsController, type: :controller do
-  let(:user) { FactoryBot.create(:user)}
-  let(:category) { FactoryBot.create(:category)}
+  let(:user) { FactoryBot.create(:user) }
+  let(:category) { FactoryBot.create(:category) }
   let(:listing) { FactoryBot.create(:listing, category: category, user: user) }
 
-  #before(:each) do
+  # before(:each) do
   #  FactoryBot.create_list(:listing, 4, user: user, category: category)
-  #end
+  # end
 
   describe '#index' do
     it 'returns a success response' do
@@ -33,7 +35,11 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
 
     it 'returns a listing with multiple images' do
       file = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
-      FactoryBot.create(:listing, user: user, category: category, images: [file, file])
+      FactoryBot.create(:listing,
+                        user: user,
+                        category: category,
+                        images: [file, file])
+
       get :index, params: {}
 
       actual = JSON.parse(response.body)
@@ -46,7 +52,7 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
       get :index, params: {}
 
       content = JSON.parse(response.body, symbolize_names: true)
-      #puts content
+      # puts content
       expect(content[0][:category]).to_not be_nil
     end
 
@@ -55,9 +61,9 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
       get :index, params: {}
 
       content = JSON.parse(response.body, symbolize_names: true)
-      #puts content
-      #puts response.body.to_yaml
-      #puts content[0][:description]
+      # puts content
+      # puts response.body.to_yaml
+      # puts content[0][:description]
 
       expect(content[0][:user_id]).to_not be_nil
     end

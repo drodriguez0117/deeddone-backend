@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RegisterController < ApplicationController
   def create
     user = User.new(user_params)
@@ -14,7 +16,7 @@ class RegisterController < ApplicationController
       render json: { csrf: token[:csrf], id: user.id, email: user.email }
     else
       render json: { error: user.errors.full_messages.join(' '),
-                     status: :unprocessable_entity}
+                     status: :unprocessable_entity }
     end
   end
 
@@ -23,5 +25,4 @@ class RegisterController < ApplicationController
   def user_params
     params.permit(:email, :password, :password_confirmation)
   end
-
 end

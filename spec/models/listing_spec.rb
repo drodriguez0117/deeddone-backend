@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'pp'
 
 RSpec.describe Listing, type: :model do
-  let!( :category) { FactoryBot.build(:category) }
+  let!(:category) { FactoryBot.build(:category) }
   let!(:user) { FactoryBot.build(:user) }
 
   context 'creation' do
@@ -34,7 +36,6 @@ RSpec.describe Listing, type: :model do
     end
 
     it 'is valid with description less than 200 chars' do
-
       description = 'NEW: Added default "Header row fixed" setting
         NEW: Support "Comment with line comment" #247
 				FIX: "Value coloring" change not applied to open files'
@@ -47,13 +48,13 @@ RSpec.describe Listing, type: :model do
     end
 
     it 'is not valid with description greater than 200 chars' do
-
       description = 'NEW: Added default "Header row fixed" setting
 				NEW: Support "Comment with line comment" #247
 				FIX: "Value coloring" change not applied to open files
         Customize plugin settings: Editor/General, Color Scheme, Formatting
-				Visit the CSV Plugin GitHub to read more about the available features & settings,
-        submit issues & feature request, or show your support by rating this plugin'
+				Visit the CSV Plugin GitHub to read more about the available features
+        & settings, submit issues & feature request, or show your support by
+        rating this plugin'
 
       expect(Listing.new(FactoryBot.attributes_for(:listing,
                                                    description: description,
@@ -90,7 +91,7 @@ RSpec.describe Listing, type: :model do
     let(:category_asset_default_path)     { ActionController::Base.helpers.asset_url(category.default_image_path, type: :image) }
     let(:category_two_asset_default_path) { ActionController::Base.helpers.asset_url(category_two.default_image_path, type: :image) }
 
-    #let(:image_listing) { FactoryBot.build(:listing, category: category, user: user, images: []) }
+    # let(:image_listing) { FactoryBot.build(:listing, category: category, user: user, images: []) }
 
     it 'should return a default image url with a valid structure' do
       expect(simple_listing.images_or_default).to be_a Array
@@ -128,7 +129,6 @@ RSpec.describe Listing, type: :model do
 
       expect(listing.images_or_default.count).to eq 2
     end
-
   end
 
   context '#as_json' do

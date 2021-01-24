@@ -26,9 +26,11 @@ RSpec.describe RegisterController, type: :controller do
         post :create, params: user_params
       end.to change(User, :count).by(1)
     end
-    
-    # factorybot create
-    # post
-    #
+
+    it 'returns error when email is not unique' do
+      FactoryBot.create(:user, email: 'test@domain.com')
+      post :create, params: user_params
+      expect(response_json['error']).to eq('Email has already been taken')
+    end
   end
 end

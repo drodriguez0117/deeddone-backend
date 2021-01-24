@@ -52,7 +52,6 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
       get :index, params: {}
 
       content = JSON.parse(response.body, symbolize_names: true)
-      # puts content
       expect(content[0][:category]).to_not be_nil
     end
 
@@ -60,12 +59,14 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
       FactoryBot.create(:listing, user: user, category: category)
       get :index, params: {}
 
-      content = JSON.parse(response.body, symbolize_names: true)
+      # content = JSON.parse(response.body, symbolize_names: true)
       # puts content
       # puts response.body.to_yaml
       # puts content[0][:description]
-
-      expect(content[0][:user_id]).to_not be_nil
+      # puts "#{response_json[0]['user_id']}"
+      # expect(content[0][:user_id]).to_not be_nil
+      # instead of using JSON.parse()
+      expect(response_json[0]['user_id']).to_not be_nil
     end
   end
 

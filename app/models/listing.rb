@@ -31,7 +31,8 @@ class Listing < ApplicationRecord
       listing_type: listing_type,
       is_active: is_active,
       images: images_or_default,
-      category: category
+      category: category,
+      user_id: user.id
     }
   end
 

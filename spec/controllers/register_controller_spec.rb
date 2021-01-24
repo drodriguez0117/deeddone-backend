@@ -25,5 +25,9 @@ RSpec.describe RegisterController, type: :controller do
         post :create, params: user_params
       }.to change(User, :count).by(1)
     end
+
+    # factorybot create
+    # post
+    #
   end
 end

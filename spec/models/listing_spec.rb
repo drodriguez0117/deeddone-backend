@@ -15,7 +15,8 @@ RSpec.describe Listing, type: :model do
 
     it { should fail_with_null(:title) }
     it { should fail_with_null(:listing_type) }
-    it { should fail_with_null(:category_id) }
+    it { should fail_with_null(:category) }
+    it { should fail_with_null(:user_id) }
 
     it 'is valid with title length less than thirty chars' do
       title = 'short title'

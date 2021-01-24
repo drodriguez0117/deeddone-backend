@@ -6,8 +6,7 @@ module Api
       # GET /listings
       # GET /listings.json
       def index
-        @listings = Listing.includes(:category).all.with_attached_images
-
+        @listings = Listing.all.with_attached_images
         render json: @listings
       end
 
@@ -15,8 +14,7 @@ module Api
       # GET /listings/1.json
       def show
         #logger.debug "user_id: #{params[:id]}"
-        @listing = Listing.includes(:category).where(id: params[:id])
-
+        @listing = Listing.where(id: params[:id])
         render json: @listing
       end
     end

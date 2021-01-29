@@ -59,6 +59,8 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
       FactoryBot.create(:listing, user: user, category: category)
       get :index, params: {}
 
+      # puts response.status
+      # puts response.headers
       # content = JSON.parse(response.body, symbolize_names: true)
       # puts content
       # puts response.body.to_yaml

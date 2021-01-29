@@ -13,12 +13,11 @@ RSpec.describe RegisterController, type: :controller do
     it 'returns http success' do
       post :create, params: user_params
       expect(response).to be_successful
-      expect(response.cookies[JWTSessions.access_cookie]).to be_present
     end
 
     it 'returns user parameters' do
       post :create, params: user_params
-      expect(response_json.keys).to eq %w[csrf id email]
+      expect(response_json.keys).to eq %w[token id email]
     end
 
     it 'increases count' do

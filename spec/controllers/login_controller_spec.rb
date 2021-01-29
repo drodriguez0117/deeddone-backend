@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe LoginController, type: :controller do
@@ -10,38 +12,19 @@ RSpec.describe LoginController, type: :controller do
     it 'returns http success' do
       get :create, params: user_params
       expect(response).to be_successful
-      expect(response_json.keys).to eq ['csrf', 'id', 'email']
-      expect(response.cookies[JWTSessions.access_cookie]).to be_present
+      expect(response_json.keys).to eq %w[token id email]
     end
 
-    it 'returns unauthorized for invalid params' do
+    it 'returns unauthorized for invalid password' do
       post :create, params: { email: user.email, password: 'not_right' }
       expect(response).to have_http_status(401)
-    end
-  end
-
-  describe '#destroy' do
-    context 'failure' do
-      it 'returns unauthorized http status' do
-        delete :destroy
-        expect(response).to have_http_status(401)
-      end
+      expect(response_json['error']).to eq('Invalid email or password')
     end
 
-    context 'success' do
-      it 'returns http success with valid tokens' do
-        payload = { user_id: user.id }
-        session = JWTSessions::Session.new(payload: payload,
-                                           refresh_by_access_allowed: true,
-                                           namespace: "user_#{user.id}")
-        tokens = session.login
-        request.cookies[JWTSessions.access_cookie] = tokens[:access]
-        request.headers[JWTSessions.csrf_header] = tokens[:csrf]
-
-        delete :destroy
-        expect(response).to have_http_status(200)
-        expect(response_json).to eq('ok')
-      end
+    it 'returns unauthorized for invalid email' do
+      post :create, params: { email: 'xxx@xxx.com', password: 'not_right' }
+      expect(response).to have_http_status(401)
+      expect(response_json['error']).to eq('Invalid email or password')
     end
   end
 end

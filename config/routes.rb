@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   post 'refresh', controller: :refresh, action: :create
   post 'login', controller: :login, action: :create
   post 'register', controller: :register, action: :create
-  delete 'login', controller: :login, action: :destroy
 
   scope module: 'api/v1' do
     resources :listings, only: %i[index show]

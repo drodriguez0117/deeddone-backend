@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  post 'refresh', controller: :refresh, action: :create
   post 'login', controller: :login, action: :create
   post 'register', controller: :register, action: :create
 

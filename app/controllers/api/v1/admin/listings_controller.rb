@@ -2,7 +2,6 @@ module Api
   module V1
     module Admin
       class ListingsController < ApplicationController
-        before_action :authorize_access_request!, except: %i[show]
         before_action :set_listing, only: %i[update destroy]
 
         # GET /admin/listings/1

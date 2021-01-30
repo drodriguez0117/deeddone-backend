@@ -2,6 +2,7 @@
 module Api
   module V1
     class ListingsController < ApplicationController
+      skip_before_action :authorized
 
       # GET /listings
       # GET /listings.json

@@ -2,22 +2,20 @@ module Api
   module V1
     module Admin
       class ListingsController < ApplicationController
+        before_action :authorized
         before_action :set_listing, only: %i[update destroy]
 
         # GET /admin/listings/1
         # GET /admin/listings/1.json
         def show
-          #logger.debug "user_id: #{params[:id]}"
           @listings = Listing.where(user_id: params[:id])
-
           render json: add_image_to_listing
         end
 
         # POST /admin/listings
         # POST /admin/listings.json
         def create
-          @listing = current_user.listings.build(listing_params)
-
+          @listing = logged_in_user.listings.build(listing_params)
           if @listing.save
             render json: @listing, status: :created
           else
@@ -53,7 +51,7 @@ module Api
 
         # Use callbacks to share common setup or constraints between actions.
         def set_listing
-          @listing = current_user.listings.find(params[:id])
+          @listing = logged_in_user.listings.find(params[:id])
         end
 
         # Only allow a list of trusted parameters through.

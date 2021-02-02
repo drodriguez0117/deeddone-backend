@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 2020_04_22_022433) do
     t.string "name", limit: 200, null: false
     t.string "default_image_path", limit: 500
     t.boolean "is_active", default: true
+    t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
   create_table "listings", force: :cascade do |t|

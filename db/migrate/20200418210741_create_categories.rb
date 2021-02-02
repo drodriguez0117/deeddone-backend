@@ -5,5 +5,6 @@ class CreateCategories < ActiveRecord::Migration[6.0]
       t.string  :default_image_path, limit: 500
       t.boolean :is_active, default: true
     end
+    add_index :categories, :name, unique: true
   end
 end

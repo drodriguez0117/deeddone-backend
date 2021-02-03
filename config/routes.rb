@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   scope module: 'api/v1/admin', path: 'admin', as: 'admin' do
     resources :listings
+    resources :categories, only: %i[index]
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

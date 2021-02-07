@@ -7,7 +7,7 @@ module Api
         # GET /categories
         # GET /categories.json
         def index
-          @categories = Category.all
+          @categories = Category.where(is_active: true).order(:name)
           render json: @categories
         end
       end

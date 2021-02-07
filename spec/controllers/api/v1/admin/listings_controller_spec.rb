@@ -6,9 +6,10 @@ require 'support/active_storage_helpers'
 RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
   let(:category) { FactoryBot.create(:category) }
+  let(:exchange) { FactoryBot.create(:exchange) }
 
   let(:valid_attributes) do
-    FactoryBot.attributes_for(:listing, category_id: category.id)
+    FactoryBot.attributes_for(:listing, category_id: category.id, exchange_id: exchange.id)
   end
 
   let(:valid_attributes_with_image) do
@@ -35,7 +36,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
 
   describe '#show' do
     let(:listing) do
-      FactoryBot.create(:listing, category: category, user: user)
+      FactoryBot.create(:listing, category: category, exchange: exchange, user: user)
     end
 
     it 'returns a successful response' do
@@ -62,6 +63,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
           post :create, params: { listing:
                                     FactoryBot.create(:listing,
                                                       category_id: category.id,
+                                                      exchange_id: exchange.id,
                                                       images: [file],
                                                       user: user) }
         end.to change { ActiveStorage::Attachment.count }.by(1)
@@ -75,6 +77,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
           post :create, params: { listing:
                                     FactoryBot.create(:listing,
                                                       category_id: category.id,
+                                                      exchange_id: exchange.id,
                                                       images: [file1, file2],
                                                       user: user) }
         end.to change { ActiveStorage::Attachment.count }.by(2)
@@ -105,7 +108,8 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   end
 
   describe '#update' do
-    let(:listing) { FactoryBot.create(:listing, category_id: category.id, user: user) }
+    let(:listing) { FactoryBot.create(:listing, category_id: category.id,
+                                      exchange_id: exchange.id, user: user) }
     let(:listing_with_files) do
       file1 = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
       file2 = fixture_file_upload('spec/fixtures/files/chaumont.png', 'image/png')
@@ -177,6 +181,7 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
     let!(:listing) do
       FactoryBot.create(:listing,
                         category_id: category.id,
+                        exchange_id: exchange.id,
                         user: user)
     end
 

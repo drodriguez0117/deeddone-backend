@@ -14,14 +14,16 @@
     v = user.listings.create(title: Faker::Appliance.equipment,
                              description: Faker::Lorem.sentence(word_count: 8),
                              listing_type: 'offering',
-                             category_id: rand(Category.count)
+                             category_id: rand(Category.count),
+                             exchange_id: rand(Exchange.count)
                           )
   end
   1.times do
     m = user.listings.create(title: Faker::Appliance.equipment,
                              description: Faker::Lorem.sentence(word_count: 8),
                              listing_type: 'offering',
-                             category_id: rand(Category.count)
+                             category_id: rand(Category.count),
+                             exchange_id: rand(Exchange.count)
     )
     file_path = 'spec/fixtures/files/melvin.jpg'
     m.images.attach(io: File.open(file_path),
@@ -32,6 +34,7 @@
     g = user.listings.create(title: Faker::Appliance.equipment,
                              description: Faker::Appliance.equipment,
                              listing_type: 'request',
-                             category_id: rand(Category.count))
+                             category_id: rand(Category.count),
+                             exchange_id: rand(Exchange.count))
   end
 end

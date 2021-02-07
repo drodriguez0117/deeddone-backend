@@ -10,6 +10,7 @@ class Listing < ApplicationRecord
 
   belongs_to :user
   belongs_to :category
+  belongs_to :exchange
 
   has_many_attached :images
 
@@ -32,6 +33,7 @@ class Listing < ApplicationRecord
       is_active: is_active,
       images: images_or_default,
       category: category,
+      exchange: exchange,
       user_id: user.id
     }
   end

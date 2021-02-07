@@ -7,6 +7,7 @@ class CreateListings < ActiveRecord::Migration[6.0]
       t.boolean :is_active, null: false, default: true
       t.references :user, { null: false, foreign_key: true }
       t.references :category, {null: false, foreign_key: true }
+      t.references :exchange, {null: false, foreign_key: true}
 
       t.timestamps
     end

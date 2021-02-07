@@ -5,10 +5,11 @@ require 'pp'
 
 RSpec.describe Listing, type: :model do
   let!(:category) { FactoryBot.build(:category) }
+  let!(:exchange) { FactoryBot.build(:exchange) }
   let!(:user) { FactoryBot.build(:user) }
 
   context 'creation' do
-    subject { FactoryBot.build(:listing, category: category, user: user) }
+    subject { FactoryBot.build(:listing, category: category, exchange: exchange, user: user) }
     it { should be_valid }
   end
 
@@ -18,6 +19,7 @@ RSpec.describe Listing, type: :model do
     it { should fail_with_null(:title) }
     it { should fail_with_null(:listing_type) }
     it { should fail_with_null(:category) }
+    it { should fail_with_null(:exchange) }
     it { should fail_with_null(:user_id) }
 
     it 'is valid with title length less than thirty chars' do
@@ -25,6 +27,7 @@ RSpec.describe Listing, type: :model do
       expect(Listing.new(FactoryBot.attributes_for(:listing,
                                                    title: title,
                                                    category: category,
+                                                   exchange: exchange,
                                                    user: user))).to be_valid
     end
 
@@ -43,6 +46,7 @@ RSpec.describe Listing, type: :model do
       expect(Listing.new(FactoryBot.attributes_for(:listing,
                                                    description: description,
                                                    category: category,
+                                                   exchange: exchange,
                                                    images: :with_image,
                                                    user: user))).to be_valid
     end
@@ -65,12 +69,14 @@ RSpec.describe Listing, type: :model do
     it 'is valid with valid attributes' do
       expect(Listing.new(FactoryBot.attributes_for(:listing,
                                                    category: category,
+                                                   exchange: exchange,
                                                    user: user))).to be_valid
     end
 
     it 'is valid with valid attributes with image' do
       expect(Listing.new(FactoryBot.attributes_for(:listing,
                                                    category: category,
+                                                   exchange: exchange,
                                                    images: :with_image,
                                                    user: user))).to be_valid
     end
@@ -78,6 +84,7 @@ RSpec.describe Listing, type: :model do
     it 'is valid with valid attributes with multiple images' do
       expect(Listing.new(FactoryBot.attributes_for(:listing,
                                                    category: category,
+                                                   exchange: exchange,
                                                    images: %i[with_image with_image],
                                                    user: user))).to be_valid
     end
@@ -109,7 +116,7 @@ RSpec.describe Listing, type: :model do
 
     it 'should return a valid structure for listing images' do
       file = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
-      listing = FactoryBot.create(:listing, user: user, category: category, images: [file])
+      listing = FactoryBot.create(:listing, user: user, category: category, exchange: exchange, images: [file])
 
       expect(listing.images_or_default).to be_a Array
       expect(listing.images_or_default[0].key?(:image)).to eq true
@@ -117,7 +124,7 @@ RSpec.describe Listing, type: :model do
 
     it 'should return a listing image' do
       file = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
-      listing = FactoryBot.create(:listing, user: user, category: category, images: [file])
+      listing = FactoryBot.create(:listing, user: user, category: category, exchange: exchange, images: [file])
 
       expect(listing.images_or_default.count).to eq 1
       expect(listing.images_or_default[0][:image]).to_not eq category_asset_default_path
@@ -125,7 +132,7 @@ RSpec.describe Listing, type: :model do
 
     it 'should return listing images' do
       file = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
-      listing = FactoryBot.build(:listing, user: user, category: category, images: [file, file])
+      listing = FactoryBot.build(:listing, user: user, category: category, exchange: exchange, images: [file, file])
 
       expect(listing.images_or_default.count).to eq 2
     end

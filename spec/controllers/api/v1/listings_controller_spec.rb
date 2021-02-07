@@ -6,7 +6,8 @@ require 'support/active_storage_helpers'
 RSpec.describe Api::V1::ListingsController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
   let(:category) { FactoryBot.create(:category) }
-  let(:listing) { FactoryBot.create(:listing, category: category, user: user) }
+  let(:exchange) { FactoryBot.create(:exchange)}
+  let(:listing) { FactoryBot.create(:listing, category: category, exchange: exchange, user: user) }
 
   # before(:each) do
   #  FactoryBot.create_list(:listing, 4, user: user, category: category)
@@ -19,14 +20,14 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
     end
 
     it 'returns a collection of listings' do
-      FactoryBot.create_list(:listing, 5, user: user, category: category)
+      FactoryBot.create_list(:listing, 5, user: user, category: category, exchange: exchange)
       get :index, params: {}
       expect(JSON.parse(response.body).count).to eq 5
     end
 
     it 'returns listings with an image' do
       file = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
-      FactoryBot.create(:listing, user: user, category: category, images: file)
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange, images: file)
       get :index, params: {}
 
       actual = JSON.parse(response.body)
@@ -38,6 +39,7 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
       FactoryBot.create(:listing,
                         user: user,
                         category: category,
+                        exchange: exchange,
                         images: [file, file])
 
       get :index, params: {}
@@ -48,7 +50,7 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
     end
 
     it 'returns listings with a category' do
-      FactoryBot.create(:listing, user: user, category: category)
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange)
       get :index, params: {}
 
       content = JSON.parse(response.body, symbolize_names: true)
@@ -56,7 +58,7 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
     end
 
     it 'returns listings with a user_id' do
-      FactoryBot.create(:listing, user: user, category: category)
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange)
       get :index, params: {}
 
       # puts response.status

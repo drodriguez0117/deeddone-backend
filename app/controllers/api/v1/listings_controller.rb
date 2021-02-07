@@ -7,7 +7,7 @@ module Api
       # GET /listings
       # GET /listings.json
       def index
-        @listings = Listing.where("expired_at <= ?", (Date.today + 30.days).to_s)
+        @listings = Listing.where("expires_at <= ?", (Date.today + 30.days).to_s)
                            .where(is_active: true)
                            .with_attached_images
 

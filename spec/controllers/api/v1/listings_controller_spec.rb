@@ -27,7 +27,7 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
 
     it 'returns listing that have not expired after 30 days' do
       FactoryBot.create(:listing, user: user, category: category, exchange: exchange)
-      FactoryBot.create(:listing, user: user, category: category, exchange: exchange, expired_at: (Date.today + 31.days).to_s)
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange, expires_at: (Date.today + 31.days).to_s)
       get :index, params: {}
 
       actual = JSON.parse(response.body)
@@ -36,7 +36,7 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
 
     it 'returns listing that expire today' do
       FactoryBot.create(:listing, user: user, category: category, exchange: exchange)
-      FactoryBot.create(:listing, user: user, category: category, exchange: exchange, expired_at: (Date.today + 30.days).to_s)
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange, expires_at: (Date.today + 30.days).to_s)
       get :index, params: {}
 
       actual = JSON.parse(response.body)

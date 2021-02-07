@@ -34,7 +34,7 @@ class Listing < ApplicationRecord
       images: images_or_default,
       category: category,
       exchange: exchange,
-      expired_at: expired_at,
+      expires_at: expires_at,
       user_id: user.id
     }
   end

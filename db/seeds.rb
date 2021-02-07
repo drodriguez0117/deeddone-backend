@@ -16,7 +16,7 @@
                              listing_type: 'offering',
                              category_id: rand(Category.count),
                              exchange_id: rand(Exchange.count),
-                             expired_at: (Date.today + 30.days).to_s
+                             expires_at: (Date.today + 30.days).to_s
                           )
   end
   1.times do
@@ -25,7 +25,7 @@
                              listing_type: 'offering',
                              category_id: rand(Category.count),
                              exchange_id: rand(Exchange.count),
-                             expired_at: (Date.today + 30.days).to_s
+                             expires_at: (Date.today + 30.days).to_s
     )
     file_path = 'spec/fixtures/files/melvin.jpg'
     m.images.attach(io: File.open(file_path),
@@ -38,6 +38,6 @@
                              listing_type: 'request',
                              category_id: rand(Category.count),
                              exchange_id: rand(Exchange.count),
-                             expired_at: (Date.today + 30.days).to_s)
+                             expires_at: (Date.today + 30.days).to_s)
   end
 end

@@ -7,11 +7,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 #
-# Category.destroy_all
-#
-o = Category.create(name: 'outdoors', default_image_path: 'caulk.jpg', is_active: true)
-i = Category.create(name: 'indoors', default_image_path: 'mower.jpg', is_active: true)
-
 2.times do
   user = User.create(email: Faker::Internet.email,
                      password_digest: BCrypt::Password.create('test'))
@@ -19,14 +14,14 @@ i = Category.create(name: 'indoors', default_image_path: 'mower.jpg', is_active:
     v = user.listings.create(title: Faker::Appliance.equipment,
                              description: Faker::Lorem.sentence(word_count: 8),
                              listing_type: 'offering',
-                             category_id: o.id
+                             category_id: rand(Category.count)
                           )
   end
   1.times do
     m = user.listings.create(title: Faker::Appliance.equipment,
                              description: Faker::Lorem.sentence(word_count: 8),
                              listing_type: 'offering',
-                             category_id: o.id
+                             category_id: rand(Category.count)
     )
     file_path = 'spec/fixtures/files/melvin.jpg'
     m.images.attach(io: File.open(file_path),
@@ -37,6 +32,6 @@ i = Category.create(name: 'indoors', default_image_path: 'mower.jpg', is_active:
     g = user.listings.create(title: Faker::Appliance.equipment,
                              description: Faker::Appliance.equipment,
                              listing_type: 'request',
-                             category_id: i.id)
+                             category_id: rand(Category.count))
   end
 end

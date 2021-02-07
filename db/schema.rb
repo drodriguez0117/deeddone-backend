@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2020_04_22_022433) do
     t.bigint "user_id", null: false
     t.bigint "category_id", null: false
     t.bigint "exchange_id", null: false
+    t.date "expired_at", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["category_id"], name: "index_listings_on_category_id"

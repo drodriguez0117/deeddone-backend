@@ -1,8 +1,11 @@
+require 'date'
+
 FactoryBot.define {
   factory :listing do
     title { 'Shoes' }
     description { 'tiny shoes' }
     listing_type { 'offering' }
+    expired_at { (Date.today + 30.days).to_s }
     user { nil }
 
     trait :with_image do

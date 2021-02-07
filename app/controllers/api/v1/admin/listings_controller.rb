@@ -12,6 +12,7 @@ module Api
           render json: add_image_to_listing
         end
 
+        #@todo do we need to do something about invalid expired_at dates??
         # POST /admin/listings
         # POST /admin/listings.json
         def create
@@ -23,6 +24,7 @@ module Api
           end
         end
 
+        #@todo do we need to do something about invalid expired_at dates??
         # PATCH/PUT /admin/listings/1
         # PATCH/PUT /admin/listings/1.json
         def update
@@ -57,7 +59,8 @@ module Api
         # Only allow a list of trusted parameters through.
         def listing_params
           params.require(:listing).permit(:title, :description, :listing_type,
-                                          :category_id,  :exchange_id, images: [])
+                                          :category_id,  :exchange_id, :expired_at,
+                                          images: [])
         end
 
         # move to model

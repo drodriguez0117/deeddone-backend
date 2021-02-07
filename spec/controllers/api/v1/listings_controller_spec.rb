@@ -25,6 +25,33 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
       expect(JSON.parse(response.body).count).to eq 5
     end
 
+    it 'returns listing that have not expired after 30 days' do
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange)
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange, expired_at: (Date.today + 31.days).to_s)
+      get :index, params: {}
+
+      actual = JSON.parse(response.body)
+      expect(actual.length).to eq 1
+    end
+
+    it 'returns listing that expire today' do
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange)
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange, expired_at: (Date.today + 30.days).to_s)
+      get :index, params: {}
+
+      actual = JSON.parse(response.body)
+      expect(actual.length).to eq 2
+    end
+
+    it 'returns listing that are active' do
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange)
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange, is_active: false)
+      get :index, params: {}
+
+      actual = JSON.parse(response.body)
+      expect(actual.length).to eq 1
+    end
+
     it 'returns listings with an image' do
       file = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
       FactoryBot.create(:listing, user: user, category: category, exchange: exchange, images: file)

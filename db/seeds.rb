@@ -7,8 +7,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 #
-Category.destroy_all
-
+# Category.destroy_all
+#
 o = Category.create(name: 'outdoors', default_image_path: 'caulk.jpg', is_active: true)
 i = Category.create(name: 'indoors', default_image_path: 'mower.jpg', is_active: true)
 

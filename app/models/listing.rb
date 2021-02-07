@@ -16,11 +16,10 @@ class Listing < ApplicationRecord
   def images_or_default
     if images.count.positive?
       images.map do |img|
-        { image: Rails.application.routes.url_helpers.rails_blob_url(img,
-                                                                     only_path: true) }
+        { image: Rails.application.routes.url_helpers.rails_blob_url(img, only_path: true) }
       end
     else
-      [{ image: ActionController::Base.helpers.asset_url(category.default_image_path, type: :image) }]
+      [{ image: ActionController::Base.helpers.image_url(category.default_image_path, type: :image) }]
     end
   end
 

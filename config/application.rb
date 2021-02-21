@@ -34,6 +34,11 @@ module DeeddoneBackend
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    # Optionally replace existing files instead of adding to them when assigning
+    # to a collection of attachments (as in @user.update!(images: [ … ])).
+    # Use config.active_storage.replace_on_assign_to_many to control this behavior.
+    config.active_storage.replace_on_assign_to_many = false
+
     config.logger = Logger.new(STDOUT)
     config.logger = ActiveSupport::Logger.new("Application Log")
   end

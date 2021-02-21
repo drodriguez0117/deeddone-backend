@@ -47,7 +47,7 @@ RSpec.describe Listing, type: :model do
                                                    description: description,
                                                    category: category,
                                                    exchange: exchange,
-                                                   images: :with_image,
+                                                   images: [:with_image],
                                                    user: user))).to be_valid
     end
 
@@ -62,7 +62,7 @@ RSpec.describe Listing, type: :model do
 
       expect(Listing.new(FactoryBot.attributes_for(:listing,
                                                    description: description,
-                                                   images: :with_image,
+                                                   images: [:with_image],
                                                    user: user))).not_to be_valid
     end
 
@@ -77,7 +77,7 @@ RSpec.describe Listing, type: :model do
       expect(Listing.new(FactoryBot.attributes_for(:listing,
                                                    category: category,
                                                    exchange: exchange,
-                                                   images: :with_image,
+                                                   images: [:with_image],
                                                    user: user))).to be_valid
     end
 

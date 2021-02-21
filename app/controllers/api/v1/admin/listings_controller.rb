@@ -29,8 +29,6 @@ module Api
         # PATCH/PUT /admin/listings/1.json
         def update
 
-          @listing = Listing.find(params[:id])
-
           if @listing.images.attached?
             @listing.images.purge_later
             @listing.images.attach(params[:images])
@@ -54,6 +52,7 @@ module Api
         # Use callbacks to share common setup or constraints between actions.
         def set_listing
           @listing = logged_in_user.listings.find(params[:id])
+          # @listing = logged_in_user.listings.find(params[:listing_id])
         end
 
         # Only allow a list of trusted parameters through.

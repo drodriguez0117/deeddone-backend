@@ -54,7 +54,7 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
 
     it 'returns listings with an image' do
       file = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
-      FactoryBot.create(:listing, user: user, category: category, exchange: exchange, images: file)
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange, images: [file])
       get :index, params: {}
 
       actual = JSON.parse(response.body)

@@ -28,12 +28,6 @@ module Api
         # PATCH/PUT /admin/listings/1
         # PATCH/PUT /admin/listings/1.json
         def update
-
-          if @listing.images.attached?
-            @listing.images.purge_later
-            @listing.images.attach(params[:images])
-          end
-
           if @listing.update(listing_params)
             render json: @listing, status: :ok, location: admin_listing_url(@listing)
           else
@@ -58,8 +52,7 @@ module Api
         # Only allow a list of trusted parameters through.
         def listing_params
           params.require(:listing).permit(:title, :description, :listing_type,
-                                          :category_id,  :exchange_id, :expires_at,
-                                          images: [])
+                                          :category_id,  :exchange_id, :expires_at, images: [])
         end
 
         # move to model

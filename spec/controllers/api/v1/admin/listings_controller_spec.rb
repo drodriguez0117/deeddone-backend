@@ -108,15 +108,13 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
   end
 
   describe '#update' do
-    let(:listing) { FactoryBot.create(:listing, category_id: category.id,
-                                      exchange_id: exchange.id, user: user) }
-    let(:listing_with_files) do
-      file1 = fixture_file_upload('spec/fixtures/files/melvin.jpg', 'image/jpg')
-      file2 = fixture_file_upload('spec/fixtures/files/chaumont.png', 'image/png')
+    let(:listing) { 
+      FactoryBot.create(:listing,
+                        category_id: category.id,
+                        exchange_id: exchange.id,
+                        user: user) }
 
-      FactoryBot.attributes_for(:listing,
-                                images: [file1, file2])
-    end
+      FactoryBot.attributes_for(:listing)
 
     context 'valid params' do
       before (:each) do
@@ -136,20 +134,6 @@ RSpec.describe Api::V1::Admin::ListingsController, type: :controller do
 
       it 'renders a JSON response with the listing' do
         put :update, params: { id: listing.to_param, listing: valid_attributes }
-        expect(response).to have_http_status(:ok)
-        expect(response.content_type).to eq('application/json; charset=utf-8')
-      end
-
-      it 'renders a JSON response for a listing with image' do
-        put :update, params: { id: listing.to_param,
-                               listing: FactoryBot.attributes_for(:listing, image: :with_image) }
-        expect(response).to have_http_status(:ok)
-        expect(response.content_type).to eq('application/json; charset=utf-8')
-      end
-
-      it 'renders a JSON response for a listing with multiple images' do
-        put :update, params: { id: listing.to_param,
-                               listing: listing_with_files }
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json; charset=utf-8')
       end

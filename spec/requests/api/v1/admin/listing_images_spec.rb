@@ -67,6 +67,21 @@ RSpec.describe 'Api::V1::Admin::ListingImages', type: :request do
       expect(ActiveStorage::Attachment.count).to eq(3)
     end
 
+    it 'adds multiple images to a listing' do
+      listing = FactoryBot.create(:listing,
+                                  category_id: category.id,
+                                  exchange_id: exchange.id,
+                                  images: [file1],
+                                  user: user)
+
+      post "/admin/listings/#{listing.id}/listing_images/", params: { images: [file2, file3] }, headers: token
+
+      expect(response).to have_http_status(:ok)
+
+      content = JSON.parse(response.body, symbolize_names: true)
+      expect(content[:images]).to_not be_nil
+      expect(ActiveStorage::Attachment.count).to eq(3)
+    end
   end
 
   describe 'DELETE admin/listing_images' do

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Listing < ApplicationRecord
+  include Elasticsearch::Model
+  #include Elasticsearch::Model::Callbacks
+
   validates_presence_of :title, :listing_type
 
   validates_length_of :title, maximum: 30

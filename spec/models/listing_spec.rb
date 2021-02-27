@@ -144,4 +144,10 @@ RSpec.describe Listing, type: :model do
     it 'should create object with image'
     it 'should create object without image'
   end
+
+  context 'listing_search' do
+    it 'should have a search index' do
+      expect(Listing.__elasticsearch__.index_exists?).to be_truthy
+    end
+  end
 end

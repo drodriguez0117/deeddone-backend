@@ -48,8 +48,18 @@ group :development do
   gem 'spring-watcher-listen'
 end
 
+group :test do
+  # cleanup db between tests - added with elasticsearch
+  gem 'database_cleaner'
+  # programmatically start/stop ES for tests
+  gem 'elasticsearch-extensions'
+end
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # for PROD Active Storage
 gem 'aws-sdk-s3', require: false
+
+gem 'elasticsearch-model', github: 'elastic/elasticsearch-rails', branch: '6.x'
+gem 'elasticsearch-rails', github: 'elastic/elasticsearch-rails', branch: '6.x'

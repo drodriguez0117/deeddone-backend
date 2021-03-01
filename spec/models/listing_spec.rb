@@ -144,10 +144,55 @@ RSpec.describe Listing, type: :model do
     it 'should create object with image'
     it 'should create object without image'
   end
+end
 
-  context 'listing_search' do
+RSpec.describe Listing, elasticsearch: true, type: :model do
+  let!(:category) { FactoryBot.build(:category) }
+  let!(:exchange) { FactoryBot.build(:exchange) }
+  let!(:user) { FactoryBot.build(:user) }
+
+  context 'listing_search', elasticsearch: true do
     it 'should have a search index' do
       expect(Listing.__elasticsearch__.index_exists?).to be_truthy
+    end
+  end
+
+  describe '#search' do
+    before(:each) do
+      # Listing.__elasticsearch__.create_index! index: Listing.index_name
+      # puts "Listing Settings: #{Listing.settings.to_hash}"
+      # puts "Listing Hash: #{Listing.mappings.to_hash}"
+      Listing.create(FactoryBot.attributes_for(:listing,
+                                               category: category,
+                                               exchange: exchange,
+                                               user: user))
+      # FactoryBot.build(:listing, category: category, exchange: exchange, user: user)
+      Listing.__elasticsearch__.import force: true
+      Listing.__elasticsearch__.refresh_index!
+    end
+
+    after(:each) do
+      Listing.__elasticsearch__.client.indices.delete index: Listing.index_name
+    end
+
+    it 'should index title' do
+      expect(Listing.search('Shoes').records.length).to eq(1)
+    end
+
+    it 'should index description' do
+      expect(Listing.search('tiny shoes').records.length).to eq(1)
+    end
+
+    it 'should not return records for nonsense' do
+      expect(Listing.search('on the run again').records.length).to eq(0)
+    end
+
+    it 'should not index category default_image_path' do
+      expect(Listing.search('chaumont.png').records.length).to eq(0)
+    end
+
+    it 'should not index is_active' do
+      expect(Listing.search('true').records.length).to eq(0)
     end
   end
 end

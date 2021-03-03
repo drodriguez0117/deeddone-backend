@@ -21,6 +21,7 @@ class Listing < ApplicationRecord
     mapping dynamic: 'false' do
       indexes :title, type: :text, analyzer: :english
       indexes :description, type: :text, analyzer: :english
+      indexes :is_active, type: :boolean
     end
   end
 
@@ -47,6 +48,28 @@ class Listing < ApplicationRecord
       expires_at: expires_at,
       user_id: user.id
     }
+  end
+
+  def self.search_published(query)
+    self.search({
+             query: {
+               bool: {
+                 must: [
+                   {
+                     multi_match: {
+                       query: query,
+                       fields: %i[title description]
+                     }
+                   },
+                   {
+                     match: {
+                       is_active: true
+                     }
+                   }
+                 ]
+               }
+             }
+           })
   end
 
   private

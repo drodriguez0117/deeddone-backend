@@ -8,6 +8,9 @@ Rails.application.routes.draw do
 
   scope module: 'api/v1/admin', path: 'admin', as: 'admin' do
     resources :listings do
+      collection do
+        get 'search'
+      end
       resources :listing_images, only: %i[create destroy]
     end
     resources :categories, only: %i[index]

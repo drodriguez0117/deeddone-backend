@@ -42,16 +42,24 @@ RSpec.describe Listing, elasticsearch: true, type: :model do
       expect(Listing.search('chaumont.png').records.length).to eq(0)
     end
 
-    it 'should not index is_active' do
-      expect(Listing.search('true').records.length).to eq(0)
-    end
-
     it 'should handle singular title' do
       expect(Listing.search('shoe').records.length).to eq(1)
     end
 
     it 'should handle pluralized description' do
       expect(Listing.search('pieces').records.length).to eq(1)
+    end
+
+    it 'should only return active listings' do
+      Listing.create(FactoryBot.attributes_for(:listing,
+                                               is_active: false,
+                                               category: category,
+                                               exchange: exchange,
+                                               user: user))
+      Listing.__elasticsearch__.import force: true
+      Listing.__elasticsearch__.refresh_index!
+
+      expect(Listing.search_published('velvet').records.length).to eq(1)
     end
   end
 

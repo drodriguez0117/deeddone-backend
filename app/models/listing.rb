@@ -4,16 +4,6 @@ class Listing < ApplicationRecord
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
 
-  # index_name [Rails.env, Rails.application.class.module_parent_name.underscore, name.downcase].join('_')
-  # document_type self.name.downcase
-
-  settings(index: { number_of_shards: 1 }) do
-    mapping dynamic: 'false' do
-      indexes :title, type: :text #, analyzers: 'english'
-      indexes :description, type: :text #, analyzers: 'english'
-    end
-  end
-
   validates_presence_of :title, :listing_type
 
   validates_length_of :title, maximum: 30
@@ -26,6 +16,13 @@ class Listing < ApplicationRecord
   belongs_to :exchange
 
   has_many_attached :images
+
+  settings(index: { number_of_shards: 1 }) do
+    mapping dynamic: 'false' do
+      indexes :title, type: :text, analyzer: :english
+      indexes :description, type: :text, analyzer: :english
+    end
+  end
 
   def images_or_default
     if images.count.positive?
@@ -51,10 +48,6 @@ class Listing < ApplicationRecord
       user_id: user.id
     }
   end
-  #
-  # def as_indexed_json(options = nil)
-  #   as_json( only: %i[title description])
-  # end
 
   private
 

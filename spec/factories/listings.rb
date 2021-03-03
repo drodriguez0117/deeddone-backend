@@ -3,7 +3,7 @@ require 'date'
 FactoryBot.define {
   factory :listing do
     title { 'Shoes' }
-    description { 'tiny shoes' }
+    description { 'two piece set with velvet' }
     listing_type { 'offering' }
     expires_at { (Date.today + 30.days).to_s }
     user { nil }

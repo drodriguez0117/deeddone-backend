@@ -17,11 +17,11 @@ class Listing < ApplicationRecord
 
   has_many_attached :images
 
-  settings(index: { number_of_shards: 1 }) do
-    mapping dynamic: 'false' do
-      indexes :title, type: :text, analyzer: :english
-      indexes :description, type: :text, analyzer: :english
-      indexes :is_active, type: :boolean
+  settings index: { number_of_shards: 1 } do
+    mapping dynamic: false do
+      indexes :title,       type: :text,    analyzer: :english
+      indexes :description, type: :text,    analyzer: :english
+      indexes :is_active,   type: :boolean
     end
   end
 
@@ -50,26 +50,25 @@ class Listing < ApplicationRecord
     }
   end
 
-  def self.search_published(query)
-    self.search({
+  def self.search_active(qry)
+    search({
              query: {
                bool: {
-                 must: [
+                 filter: {
+                   term: {
+                     is_active: true
+                   }
+                 },
+                 must:
                    {
                      multi_match: {
-                       query: query,
+                       query: qry,
                        fields: %i[title description]
                      }
-                   },
-                   {
-                     match: {
-                       is_active: true
-                     }
                    }
-                 ]
-               }
+                 }
              }
-           })
+           }).records
   end
 
   private

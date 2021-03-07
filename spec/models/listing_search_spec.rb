@@ -59,7 +59,7 @@ RSpec.describe Listing, elasticsearch: true, type: :model do
       Listing.__elasticsearch__.import force: true
       Listing.__elasticsearch__.refresh_index!
 
-      expect(Listing.search_published('velvet').records.length).to eq(1)
+      expect(Listing.search_active('velvet').records.length).to eq(1)
     end
   end
 

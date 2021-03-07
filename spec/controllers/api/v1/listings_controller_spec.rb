@@ -9,10 +9,6 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
   let(:exchange) { FactoryBot.create(:exchange)}
   let(:listing) { FactoryBot.create(:listing, category: category, exchange: exchange, user: user) }
 
-  # before(:each) do
-  #  FactoryBot.create_list(:listing, 4, user: user, category: category)
-  # end
-
   describe '#index' do
     it 'returns a success response' do
       get :index, params: {}
@@ -87,16 +83,6 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
     it 'returns listings with a user_id' do
       FactoryBot.create(:listing, user: user, category: category, exchange: exchange)
       get :index, params: {}
-
-      # puts response.status
-      # puts response.headers
-      # content = JSON.parse(response.body, symbolize_names: true)
-      # puts content
-      # puts response.body.to_yaml
-      # puts content[0][:description]
-      # puts "#{response_json[0]['user_id']}"
-      # expect(content[0][:user_id]).to_not be_nil
-      # instead of using JSON.parse()
       expect(response_json[0]['user_id']).to_not be_nil
     end
   end
@@ -119,6 +105,25 @@ RSpec.describe Api::V1::ListingsController, type: :controller do
       get :show, params: { id: listing.id }
       content = JSON.parse(response.body, symbolize_names: true)
       expect(content[0][:user_id]).to_not be_nil
+    end
+  end
+
+  describe '#search', elasticsearch: true do
+    it 'should return a listing' do
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange)
+      Listing.__elasticsearch__.import force: true
+      Listing.__elasticsearch__.refresh_index!
+
+      get :search, params: { filter_path: 'hits.hits._source', qry: 'shoes' }
+      expect(response_json).to_not be_empty
+    end
+    it 'should not return a listing' do
+      FactoryBot.create(:listing, user: user, category: category, exchange: exchange)
+      Listing.__elasticsearch__.import force: true
+      Listing.__elasticsearch__.refresh_index!
+
+      get :search, params: { qry: 'cold' }
+      expect(response_json).to be_empty
     end
   end
 end

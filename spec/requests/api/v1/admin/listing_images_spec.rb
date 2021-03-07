@@ -135,21 +135,5 @@ RSpec.describe 'Api::V1::Admin::ListingImages', type: :request do
       expect(content[:images].length).to eq(1)
       expect(ActiveStorage::Attachment.count).to eq(1)
     end
-
-    # it 'throws error with invalid parameters' do
-    #   listing = FactoryBot.attributes_for(:listing,
-    #                                       category_id: category.id,
-    #                                       exchange_id: exchange.id,
-    #                                       images: [file1],
-    #                                       user: user)
-    #
-    #   # create the user listing
-    #   post '/admin/listings', params: { listing: listing }, headers: token
-    #
-    #   key = "%2Frails%2Factive_storage%2Fblobs%2FeyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdXNHIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--8f186163446814651338830c115f72d7e6a52238%2Fmelvin.jpg"
-    #   delete "/admin/listings/#{listing[:id]}/listing_images/#{key}", params: {}, headers: token
-    #
-    #   expect(response).to have_http_status(:unprocessable_entity)
-    # end
   end
 end

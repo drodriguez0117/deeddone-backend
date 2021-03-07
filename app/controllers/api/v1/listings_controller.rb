@@ -21,6 +21,12 @@ module Api
         @listing = Listing.where(id: params[:id])
         render json: @listing
       end
+
+      def search
+        @listings = Listing.search_active params[:qry]
+        logger.debug "Listings: #{@listings}"
+        render json: @listings, status: :ok
+      end
     end
   end
 end

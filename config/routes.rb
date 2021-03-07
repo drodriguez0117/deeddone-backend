@@ -3,14 +3,15 @@ Rails.application.routes.draw do
   post 'register', controller: :register, action: :create
 
   scope module: 'api/v1' do
-    resources :listings, only: %i[index show]
+    resources :listings, only: %i[index show] do
+      collection do
+        get 'search'
+      end
+    end
   end
 
   scope module: 'api/v1/admin', path: 'admin', as: 'admin' do
     resources :listings do
-      collection do
-        get 'search'
-      end
       resources :listing_images, only: %i[create destroy]
     end
     resources :categories, only: %i[index]
